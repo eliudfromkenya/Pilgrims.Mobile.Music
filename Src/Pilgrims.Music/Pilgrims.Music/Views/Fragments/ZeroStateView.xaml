@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Pilgrims.Music.Views.Fragments.ZeroStateView"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Margin="100, -50, 100, 0">
+        <Image
+            Source="flame.png"
+            WidthRequest="200"
+            HeightRequest="200"></Image>
+        <Label
+            HorizontalTextAlignment="Center"
+            Text="All clear"
+            Style="{StaticResource Headline4_MulishBlack}"></Label>
+        <Label
+            HorizontalTextAlignment="Center"
+            Style="{StaticResource Body1_MulishRegular}"
+            Text="Looks like you don't have any tasks for this day"
+            TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"></Label>
+</StackLayout>

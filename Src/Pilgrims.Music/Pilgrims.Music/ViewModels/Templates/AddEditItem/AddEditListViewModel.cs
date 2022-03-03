@@ -1,0 +1,185 @@
+﻿using Prism.Navigation;
+using Prism.Regions.Navigation;
+using Prism.Services.Dialogs;
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Windows.Input;
+using Pilgrims.Music.Auth;
+using Pilgrims.Music.Helpers;
+using Pilgrims.Music.Helpers.Validations;
+using Pilgrims.Music.Helpers.Validations.Rules;
+using Pilgrims.Music.Models;
+using Pilgrims.Music.Repositories.FirestoreRepository;
+using Pilgrims.Music.Views.Dialogs;
+using Xamarin.Forms;
+
+namespace Pilgrims.Music.ViewModels.Templates.AddEditItem
+{
+    public class AddEditListViewModel : BaseRegionViewModel
+    {
+        #region Private & Protected
+
+        private IDialogService _dialogService;
+        private IFirestoreRepository<ListModel> _listRepository;
+
+        #endregion
+
+        #region Properties
+
+        public ListModel AddList { get; set; }
+        public ValidatableObject<string> Name { get; set; }
+        public ValidatableObject<string> Color { get; set; }
+        public ObservableCollection<string> ColorList { get; set; }
+        public string Mode { get; set; }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand CreateCommand { get; set; }
+
+        public ICommand ValidateCommand { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public AddEditListViewModel(
+            INavigationService navigationService,
+            IDialogService dialogService,
+            IFirestoreRepository<ListModel> listRepository) : base(navigationService)
+        {
+            _dialogService = dialogService;
+            _listRepository = listRepository;
+
+            CreateCommand = new Command(CreateCommandHandler);
+            ValidateCommand = new Command<string>(ValidateCommandHandler);
+
+            AddValidations();
+
+            InitForm();
+        }
+
+        #endregion
+
+        #region Validation Handlers
+
+        private void ValidateCommandHandler(string field)
+        {
+            switch (field)
+            {
+                case "name": Name.Validate(); break;
+                case "color": Color.Validate(); break;
+            }
+        }
+
+        #endregion
+
+        #region Command Handlers
+
+        private async void CreateCommandHandler()
+        {
+            ValidateForm();
+            if (!IsFormValid())
+            {
+                return;
+            }
+
+            try
+            {
+                var auth = DependencyService.Get<IFirebaseAuthentication>();
+                var userId = auth.GetUserId();
+                var model = new ListModel()
+                {
+                    Name = Name.Value,
+                    Color = Color.Value,
+                    UserId = userId
+                };
+                var wasAdded = await _listRepository.Add(model);
+                if(wasAdded)
+                {
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    var param = new DialogParameters()
+                    {
+                        { "message", Constants.Errors.GeneralError }
+                    };
+                    _dialogService.ShowDialog(nameof(ErrorDialog), param);
+                }
+            }
+            catch (Exception ex)
+            {
+                var param = new DialogParameters()
+                {
+                    { "message", Constants.Errors.GeneralError }
+                };
+                _dialogService.ShowDialog(nameof(ErrorDialog), param);
+                Debug.Write(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Region Navigation Handlers
+
+        public override void OnNavigatedTo(INavigationContext navigationContext)
+        {
+            var isEdit = navigationContext.Parameters.GetValue<bool>("isEdit");
+            var list = navigationContext.Parameters.GetValue<ListModel>("list");
+
+            Mode = isEdit ? "Edit" : "Add";
+
+            if (Mode == "Edit")
+            {
+                AddList = new ListModel()
+                {
+                    Name = Constants.DefaultList.Name,
+                    Color = Constants.DefaultList.Color,
+                };
+            }
+            else
+            {
+                AddList = new ListModel()
+                {
+                    Name = Constants.DefaultList.Name,
+                    Color = Constants.DefaultList.Color,
+                };
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void InitForm()
+        {
+            ColorList = new ObservableCollection<string>(Constants.ListColorList);
+            Color.Value = Constants.DefaultList.Color;
+        }
+
+        private bool IsFormValid()
+        {
+            return Name.IsButtonActive;
+        }
+
+        private void ValidateForm()
+        {
+            Name.Validate();
+            Color.Validate();
+        }
+
+        private void AddValidations()
+        {
+            Name = new ValidatableObject<string>();
+            Color = new ValidatableObject<string>();
+
+            Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A name is required." });
+            Color.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A color is required." });
+        }
+
+        #endregion
+    }
+}

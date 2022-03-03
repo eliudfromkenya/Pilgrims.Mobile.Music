@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Pilgrims.Music.Views.Fragments.ErrorView"
+             RowDefinitions="*, Auto"
+             RowSpacing="0"
+             Margin="15, 0, 15, 0">
+    <Image
+        Grid.Row="0"
+        Aspect="AspectFit"
+        Source="error.png"></Image>
+    <StackLayout 
+        Grid.Row="1">
+        <Label
+            HorizontalTextAlignment="Center"
+            Margin="30, 20, 30, 10"
+            Text="Error"
+            Style="{StaticResource Headline4_MulishBlack}"></Label>
+        <Label
+            HorizontalTextAlignment="Center"
+            Margin="0, 0, 0, 30"
+            Style="{StaticResource Body1_MulishRegular}"
+            Text="Oops, something went wrong! Please wait few moments and try again."
+            TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"></Label>
+        <Button
+            Text="TRY AGAIN"
+            Style="{StaticResource Base_Button}"
+            Command="{Binding TryAgainCommand}"
+            Margin="0, 20, 0, 25"></Button>
+    </StackLayout>
+</Grid>

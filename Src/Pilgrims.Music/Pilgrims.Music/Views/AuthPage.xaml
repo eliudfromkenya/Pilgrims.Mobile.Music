@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fragments="clr-namespace:Pilgrims.Music.Views.Fragments"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Pilgrims.Music.Views.AuthPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            xct:StateLayout.CurrentState="{Binding MainState}"
+            Padding="0, 20, 0, 0">
+            <xct:StateLayout.StateViews>
+                <xct:StateView 
+                    StateKey="Loading"
+                    VerticalOptions="FillAndExpand">
+                    <fragments:LoadingView></fragments:LoadingView>
+                </xct:StateView>
+            </xct:StateLayout.StateViews>
+            <Grid
+                ColumnDefinitions="Auto, Auto"
+                Margin="20, 0, 0, 10"
+                HorizontalOptions="Start">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Label
+                    Grid.Column="0"
+                    Text="&#xf060;"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"></Label>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Title}"
+                    Style="{StaticResource Headline4_MulishBlack}"
+                    Margin="10, 0, 0, 0"
+                    VerticalOptions="Center"></Label>
+            </Grid>
+            <ContentView prism:RegionManager.RegionName="LoginRegion"
+                         IsVisible="{Binding CurrentAuthScreen, Converter={xct:EqualConverter}, ConverterParameter='login'}"/>
+            <ContentView prism:RegionManager.RegionName="SignUpRegion"
+                         IsVisible="{Binding CurrentAuthScreen, Converter={xct:EqualConverter}, ConverterParameter='signup'}"/>
+            <Label
+                IsVisible="{Binding CurrentAuthScreen, Converter={xct:EqualConverter}, ConverterParameter='login'}"
+                HorizontalTextAlignment="Center"
+                Margin="20, 0, 20, 30"
+                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            Text="Don't have an account? "
+                            Style="{StaticResource Body1_MulishRegular}"></Span>
+                        <Span
+                            Text="Sign Up"
+                            Style="{StaticResource Base_Link}"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SwitchToSignUpCommand}" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label
+                IsVisible="{Binding CurrentAuthScreen, Converter={xct:EqualConverter}, ConverterParameter='signup'}"
+                HorizontalTextAlignment="Center"
+                Margin="20, 0, 20, 30"
+                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            Text="Already have an account? "
+                            Style="{StaticResource Body1_MulishRegular}"></Span>
+                        <Span
+                            Text="Login"
+                            Style="{StaticResource Base_Link}"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SwitchToLoginCommand}" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

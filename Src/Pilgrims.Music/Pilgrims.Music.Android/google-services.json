@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1011615725803",
+    "project_id": "esoteric-accord-215700",
+    "storage_bucket": "esoteric-accord-215700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011615725803:android:89b9d16a0fcbf143dce6ae",
+        "android_client_info": {
+          "package_name": "com.pilgrims.musicapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011615725803-f0f3h9afonk06itdbppa5ugqtj53h6pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBewKagg0tO_uszJBGmgqb1DGvS6PY1NEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1011615725803-f0f3h9afonk06itdbppa5ugqtj53h6pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

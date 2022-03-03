@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+        xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+        x:Class="Pilgrims.Music.Views.Templates.AddEditItem.AddEditTaskTemplate">
+    <Grid
+        RowDefinitions="*, Auto">
+        <StackLayout
+            Grid.Row="0">
+            <StackLayout
+                Spacing="5">
+                <Label
+                    Text="Name"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="NameFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        Placeholder="Enter task name"
+                        Text="{Binding Name.Value}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Behaviors>
+                            <xct:EventToCommandBehavior
+                                EventName="Completed"
+                                Command="{Binding CreateCommand}"></xct:EventToCommandBehavior>
+                            <xct:UserStoppedTypingBehavior
+							    Command="{Binding ValidateCommand}"
+							    CommandParameter="name"
+                                StoppedTypingTimeThreshold="50"
+                                ShouldDismissKeyboardAutomatically="False"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							    TargetType="Entry"
+							    Binding="{Binding Name.IsValid}"
+							    Value="False">
+                                <Setter TargetName="NameFrame" Property="Frame.BorderColor" Value="{StaticResource FailColor}" />
+                                <Setter TargetName="AddButton" Property="Button.IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+                <Label
+                    IsVisible="{Binding Name.IsValid, Converter={xct:InvertedBoolConverter}}"
+					Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					TextColor="{StaticResource FailColor}" />
+            </StackLayout>
+            <StackLayout
+                Spacing="5">
+                <Label
+                    Text="List"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="ListFrame"
+                    Style="{StaticResource Base_FrameEntry}"
+                    Padding="15, 10">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenListDialogCommand}"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <Label
+                        Text="{Binding List.Value}"
+                        Style="{StaticResource Subtitle1_MulishRegular}">
+                    </Label>
+                </Frame>
+                <Label
+                    IsVisible="{Binding List.IsValid, Converter={xct:InvertedBoolConverter}}"
+					Text="{Binding List.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					TextColor="{StaticResource FailColor}" />
+            </StackLayout>
+            <StackLayout
+                Spacing="5">
+                <Label
+                    Text="Date"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="DateFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <DatePicker
+                        FontFamily="Mulish_Regular"
+                        Date="{Binding Date.Value}"
+                        MinimumDate="{Binding MinDate}"
+                        Format="dd/MM/yyyy"
+                        Style="{StaticResource Base_DatePicker}">
+                        <DatePicker.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </DatePicker.Effects>
+                    </DatePicker>
+                </Frame>
+                <Label
+                    IsVisible="{Binding Date.IsValid, Converter={xct:InvertedBoolConverter}}"
+					Text="{Binding Date.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					TextColor="{StaticResource FailColor}" />
+            </StackLayout>
+        </StackLayout>
+        <Button
+            x:Name="AddButton"
+            Command="{Binding CreateCommand}"
+            Grid.Row="1"
+            Margin="0, 0, 0, 15"
+            Style="{StaticResource Base_Button}"
+            VerticalOptions="End">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="task">
+                        <VisualState.StateTriggers>
+                            <StateTrigger IsActive="{Binding Mode, Converter={xct:EqualConverter}, ConverterParameter='Edit'}"></StateTrigger>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="Text" Value="Save"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="list">
+                        <VisualState.StateTriggers>
+                            <StateTrigger IsActive="{Binding Mode, Converter={xct:EqualConverter}, ConverterParameter='Add'}"></StateTrigger>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="Text" Value="Add new task"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
+    </Grid>
+</ContentView>

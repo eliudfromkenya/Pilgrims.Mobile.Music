@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+             xmlns:converters="clr-namespace:Pilgrims.Music.Converters"
+             xmlns:styles="clr-namespace:Pilgrims.Music.Styles"
+             x:Class="Pilgrims.Music.App">
+    <prism:PrismApplication.Resources>
+        <ResourceDictionary>
+            <converters:DoneIconConverter x:Key="DoneIconConverter"/>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <styles:Theme></styles:Theme>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>

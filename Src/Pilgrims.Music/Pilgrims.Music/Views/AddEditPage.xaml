@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Pilgrims.Music.Views.AddEditPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="Auto, Auto, *, Auto"
+            Padding="20, 20, 20, 0">
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto, Auto"
+                Margin="0, 0, 0, 10"
+                HorizontalOptions="Start">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Label
+                    Grid.Column="0"
+                    Text="&#xf060;"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"></Label>
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource Headline4_MulishBlack}"
+                    Text="{Binding Title}"
+                    Margin="10, 0, 0, 0"
+                    VerticalOptions="Center"/>
+            </Grid>
+            <Grid
+                IsVisible="{Binding IsEdit, Converter={xct:InvertedBoolConverter}}"
+                Grid.Row="1"
+                ColumnDefinitions="*, *"
+                Margin="0, 0, 0, 10">
+                <Frame
+                    Grid.Column="0"
+                    CornerRadius="15"
+                    Padding="0, 10"
+                    Margin="0, 0, 2, 0"
+                    xct:TouchEffect.NativeAnimation="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding ChangeTypeCommand}"
+                            CommandParameter="task"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="selected">
+                                <VisualState.StateTriggers>
+                                    <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='task'}"></StateTrigger>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"/>
+                                    <Setter Property="HasShadow" Value="True"/>
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="notSelected">
+                                <VisualState.StateTriggers>
+                                    <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='list'}"></StateTrigger>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}"/>
+                                    <Setter Property="HasShadow" Value="False"/>
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightCardBorderColor}, Dark={StaticResource DarkCardBorderColor}}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Label
+                        Text="Task"
+                        FontSize="{StaticResource Body1FontSize}"
+                        HorizontalTextAlignment="Center">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="selected">
+                                    <VisualState.StateTriggers>
+                                        <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='task'}"></StateTrigger>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="FontFamily" Value="Mulish_ExtraBold"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonTextColor}, Dark={StaticResource DarkButtonTextColor}}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="notSelected">
+                                    <VisualState.StateTriggers>
+                                        <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='list'}"></StateTrigger>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="FontFamily" Value="Mulish_SemiBold"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Label>
+                </Frame>
+                <Frame
+                    Grid.Column="1"
+                    CornerRadius="15"
+                    Padding="0, 10"
+                    Margin="2, 0, 0, 0"
+                    xct:TouchEffect.NativeAnimation="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding ChangeTypeCommand}"
+                            CommandParameter="list"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="selected">
+                                <VisualState.StateTriggers>
+                                    <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='list'}"></StateTrigger>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"/>
+                                    <Setter Property="HasShadow" Value="True"/>
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="notSelected">
+                                <VisualState.StateTriggers>
+                                    <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='task'}"></StateTrigger>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}"/>
+                                    <Setter Property="HasShadow" Value="False"/>
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightCardBorderColor}, Dark={StaticResource DarkCardBorderColor}}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Label
+                        Text="List"
+                        FontSize="{StaticResource Body1FontSize}"
+                        HorizontalTextAlignment="Center">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="selected">
+                                    <VisualState.StateTriggers>
+                                        <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='list'}"></StateTrigger>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="FontFamily" Value="Mulish_ExtraBold"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonTextColor}, Dark={StaticResource DarkButtonTextColor}}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="notSelected">
+                                    <VisualState.StateTriggers>
+                                        <StateTrigger IsActive="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='task'}"></StateTrigger>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="FontFamily" Value="Mulish_SemiBold"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightDisabledTextColor}, Dark={StaticResource DarkDisabledTextColor}}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Label>
+                </Frame>
+            </Grid>
+            <ContentView prism:RegionManager.RegionName="AddEditTaskRegion"
+                         IsVisible="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='task'}"
+                         Grid.Row="2"/>
+            <ContentView prism:RegionManager.RegionName="AddEditListRegion"
+                         IsVisible="{Binding Type, Converter={xct:EqualConverter}, ConverterParameter='list'}"
+                         Grid.Row="2"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
